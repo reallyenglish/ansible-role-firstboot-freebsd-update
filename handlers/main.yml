@@ -1,0 +1,6 @@
+---
+
+- name: Restart firstboot-freebsd-update
+  service:
+    name: firstboot-freebsd-update
+    state: restarted

@@ -1,0 +1,6 @@
+---
+
+- name: Install firstboot-freebsd-update
+  pkgng:
+    name: firstboot-freebsd-update
+    state: present

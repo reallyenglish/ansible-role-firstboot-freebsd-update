@@ -1,0 +1,8 @@
+firstboot-freebsd-update_user: firstboot-freebsd-update
+firstboot-freebsd-update_group: firstboot-freebsd-update
+firstboot-freebsd-update_log_dir: /var/log/firstboot-freebsd-update
+firstboot-freebsd-update_db_dir: "{{ __firstboot-freebsd-update_db_dir }}"
+firstboot-freebsd-update_service: firstboot-freebsd-update
+firstboot-freebsd-update_conf_dir: "{{ __firstboot-freebsd-update_conf_dir }}"
+firstboot-freebsd-update_conf_file: "{{ __firstboot-freebsd-update_conf_dir }}/firstboot-freebsd-update.conf"
+firstboot-freebsd-update_flags: ""
