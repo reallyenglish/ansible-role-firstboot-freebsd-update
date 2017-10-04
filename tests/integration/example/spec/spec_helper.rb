@@ -1,38 +1,39 @@
 require "infrataster/rspec"
-require "capybara"
+require "English"
+require "pathname"
 
 ENV["VAGRANT_CWD"] = File.dirname(__FILE__)
 ENV["LANG"] = "C"
 
 if ENV["JENKINS_HOME"]
-  # rubocop:disable Metrics/LineLength
-  #
-  # XXX "bundle exec vagrant" fails to load.
-  # https://github.com/bundler/bundler/issues/4602
-  #
-  # > bundle exec vagrant --version
-  # bundler: failed to load command: vagrant (/usr/local/bin/vagrant)
-  # Gem::Exception: can't find executable vagrant
-  #   /usr/local/lib/ruby/gems/2.2/gems/bundler-1.12.1/lib/bundler/rubygems_integration.rb:373:in `block in replace_bin_path'
-  #   /usr/local/lib/ruby/gems/2.2/gems/bundler-1.12.1/lib/bundler/rubygems_integration.rb:387:in `block in replace_bin_path'
-  #   /usr/local/bin/vagrant:23:in `<top (required)>'
-  #
-  # this causes "vagrant ssh-config" to fail, invoked in a spec file, i.e. when
-  # you need to ssh to a vagrant host.
-  #
-  # include the path of bin to vagrant
-  #
-  vagrant_real_path = `pkg info -l vagrant | grep -v '/usr/local/bin/vagrant' | grep -E 'bin\/vagrant$'| sed -e 's/^[[:space:]]*//'`
-  # rubocop:enable Metrics/LineLength
-  vagrant_bin_dir = File.dirname(vagrant_real_path)
-  ENV["PATH"] = "#{vagrant_bin_dir}:#{ENV['PATH']}"
+  # XXX inject vagrant `bin` path to ENV["PATH"]
+  # https://github.com/reallyenglish/packer-templates/pull/48
+  vagrant_path = ""
+  Bundler.with_clean_env do
+    gem_which_vagrant = `gem which vagrant 2>/dev/null`.chomp
+    if gem_which_vagrant != ""
+      vagrant_path = Pathname
+                     .new(gem_which_vagrant)
+                     .parent
+                     .parent + "bin"
+    end
+  end
+  ENV["PATH"] = "#{vagrant_path}:#{ENV['PATH']}"
 end
 
-Infrataster::Server.define(
-  :client1,
-  "192.168.21.100",
-  vagrant: true
-)
+def exec_and_abort_if_fail(cmd)
+  status = system cmd
+  $stderr.puts "`#{cmd}` failed." unless $CHILD_STATUS.exitstatus.zero?
+  abort unless $CHILD_STATUS.exitstatus.zero?
+  status
+end
+
+def vagrant(args)
+  Bundler.with_clean_env do
+    exec_and_abort_if_fail "vagrant #{args}"
+  end
+end
+
 Infrataster::Server.define(
   :server1,
   "192.168.21.200",

@@ -1,0 +1,13 @@
+---
+
+- name: Enable firstboot_freebsd_update
+  service:
+    name: firstboot_freebsd_update
+    enabled: yes
+
+- name: Create /etc/rc.conf.d/firstboot_freebsd_update
+  template:
+    src: firstboot_freebsd_update.rcd.j2
+    dest: /etc/rc.conf.d/firstboot_freebsd_update
+    mode: 0644
+    validate: sh -n %s

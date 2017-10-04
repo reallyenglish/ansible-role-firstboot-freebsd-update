@@ -5,33 +5,4 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
-- name: Create log directory
-  file:
-    path: "{{ firstboot-freebsd-update_log_dir }}"
-    mode: 0755
-    owner: "{{ firstboot-freebsd-update_user }}"
-    group: "{{ firstboot-freebsd-update_group }}"
-    state: directory
-  notify: Restart firstboot-freebsd-update
-
-- name: Create db directory
-  file:
-    path: "{{ firstboot-freebsd-update_db_dir }}"
-    mode: 0755
-    owner: "{{ firstboot-freebsd-update_user }}"
-    group: "{{ firstboot-freebsd-update_group }}"
-    state: directory
-  notify: Restart firstboot-freebsd-update
-
-- name: Create firstboot-freebsd-update.conf
-  template:
-    src: firstboot-freebsd-update.conf.j2
-    dest: "{{ firstboot-freebsd-update_conf_file }}"
-    validate: echo %s
-  notify: Restart firstboot-freebsd-update
-
-- name: Start firstboot-freebsd-update
-  service:
-    name: "{{ firstboot-freebsd-update_service }}"
-    enabled: true
-    state: started
+- include: "configure-{{ ansible_os_family }}.yml"

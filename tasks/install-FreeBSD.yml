@@ -1,6 +1,10 @@
 ---
 
-- name: Install firstboot-freebsd-update
-  pkgng:
-    name: firstboot-freebsd-update
-    state: present
+- name: Install firstboot_freebsd_update
+  # XXX sysutils/firstboot_freebsd_update cannot be testable without a
+  # modification, or `firstboot_freebsd_update_flags`
+  template:
+    src: firstboot_freebsd_update.j2
+    dest: /usr/local/etc/rc.d/firstboot_freebsd_update
+    mode: 0755
+    validate: sh -n %s
