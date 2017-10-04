@@ -36,7 +36,9 @@ end
 
 desc "import required roles"
 task :prepare_roles do
-  sh "ansible-galaxy install -r requirements.yml -p roles"
+  if File.exist?("requirements.yml")
+    sh "ansible-galaxy install -r requirements.yml -p roles"
+  end
 end
 
 desc "clean up required roles"

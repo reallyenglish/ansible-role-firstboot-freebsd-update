@@ -9,4 +9,6 @@
 
   pre_tasks:
   roles:
-    - firstboot-freebsd-update
+    - ansible-role-firstboot-freebsd-update
+  vars:
+    firstboot_freebsd_update_flags: --not-running-from-cron

@@ -1,6 +1,6 @@
 # ansible-role-firstboot-freebsd-update
 
-A brief description of the role goes here.
+Update the system using freebsd-update when it first boots.
 
 # Requirements
 
@@ -8,8 +8,9 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
+| `firstboot_freebsd_update_flags` | additional flags for `freebsd-update` | `""` |
 
 
 # Dependencies
@@ -19,11 +20,19 @@ None
 # Example Playbook
 
 ```yaml
+- hosts: localhost
+  roles:
+    - ansible-role-firstboot-freebsd-update
+  vars:
+    # XXX you usually do not set any flags in this variable. just for testing
+    # purpose.
+    firstboot_freebsd_update_flags: --not-running-from-cron
 ```
 
 # License
 
 ```
+Copyright (c) <cperciva@FreeBSD.org>
 Copyright (c) 2017 Tomoyuki Sakurai <tomoyukis@reallyenglish.com>
 
 Permission to use, copy, modify, and distribute this software for any

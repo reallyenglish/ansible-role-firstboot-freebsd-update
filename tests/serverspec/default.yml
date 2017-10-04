@@ -2,4 +2,6 @@
   roles:
     - ansible-role-firstboot-freebsd-update
   vars:
-    firstboot-freebsd-update_config: ""
+    # XXX you usually do not need any flags in this variable. just for testing
+    # purpose.
+    firstboot_freebsd_update_flags: --not-running-from-cron

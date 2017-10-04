@@ -1,2 +1,1 @@
-__firstboot-freebsd-update_db_dir: /var/db/firstboot-freebsd-update
-__firstboot-freebsd-update_conf_dir: /usr/local/etc/firstboot-freebsd-update
+---
